@@ -54,53 +54,53 @@ Milestones (ažurirano)
 ----------------------
 
 Milestone 0 — Postavka (1 dan)
-- [ ] Napraviti repozitorijum i osnovnu strukturu (folderi, README).
-- [ ] Mala test data: phones.txt, calls.txt (par desetina redova), blocked.txt.
-- [ ] Dodati basic CLI stub (main.py) koji može učitati serijalizovano stanje ili raw fajlove.
+- [W] Napraviti repozitorijum i osnovnu strukturu (folderi, README).
+- [W] Mala test data: phones.txt, calls.txt (par desetina redova), blocked.txt.
+- [W] Dodati basic CLI stub (main.py) koji može učitati serijalizovano stanje ili raw fajlove.
 
 Milestone 0.5 — Preprocessing & Serialization (obavezno pre velikih datasetova)
 - Zašto: start aplikacije ne sme trajati dugo; veliki fajlovi preprocesirati unapred.
-- [ ] Implementirati preprocessor.py: parsiranje phones.txt, calls.txt, blocked.txt -> izgradnja strukturiranog stanja.
+- [W] Implementirati preprocessor.py: parsiranje phones.txt, calls.txt, blocked.txt -> izgradnja strukturiranog stanja.
   - Generisati i serijalizovati:
     - phonebook dict (number -> Contact)
     - tri trie-a (firstname, lastname, phoneprefix)
     - calls index: number -> List[Call] (sorted po datumu) i globalna lista poziva
-    - popularity graph metrika (node metrika + edge info ako želite)
+    - peopularity graph metrika (node metrika + edge info ako želit)
   - Napraviti verzionisani meta fajl (npr. preprocessed/meta.json sa schema_ver)
 - [ ] CLI opcija: --rebuild-preprocessed i --load-preprocessed.
 - Acceptance: učitavanje serijalizovanog stanja treba trajati sekundе za tipične test fajlove.
 
 Milestone 1 — Osnovni I/O i modeli (2–4 sata)
-- [ ] Parsers u data_loader.py s validacijom i sanitizacijom (videti Normalizacija dole).
-- [ ] Klase:
+- [W] Parsers u data_loader.py s validacijom i sanitizacijom (videti Normalizacija dole).
+- [W] Klase:
   - Contact { number, first_name, last_name, meta }
   - Call { caller, callee, start_datetime, duration_seconds, status } (status: OK | BLOCKED | INVALID)
-- [ ] In-memory strukture:
+- [W] In-memory strukture:
   - Dict number -> Contact
   - List[Call] sortirana po datumu
   - Index: dict number -> List[Call] (append, sort po start na rebuild)
 - Tests: parser za invalid/valid redove, logovanje ignorisanih.
 
 Milestone 2 — File-based simulation (zad 2) (2–4 sata)
-- [ ] Učitati file (može manji od calls.txt) i za svaki red:
+- [W] Učitati file (može manji od calls.txt) i za svaki red:
   - Parsirati, normalizovati, validnost.
   - Odrediti status: OK ili BLOCKED (prema trenutnom blocked_set).
   - Ispisati sumarne podatke (caller, callee, start, duration, status). Po defaultu brzo (bez realnog sleep). Opcionalno --replay-rate za real-time replay.
-- [ ] Za svaki uspešan (OK) poziv -> update popularity graph.
+- [W] Za svaki uspešan (OK) poziv -> update popularity graph.
 - Acceptance: svi redovi parsirani/validirani; invalid redovi logovani; blocked pozivi označeni i ne utiču na graf.
 
 Milestone 3 — Istorije poziva (zadaci 3 i 4) (3–6 sati)
-- [ ] get_history_between(a,b) -> List[Call] (svi pozivi između datih brojeva, hronološki).
-- [ ] get_history_for(number) -> List[Call] (dolazni i odlazni, sa flagom caller/callee).
-- [ ] Format ispisa: datum/vreme, dužina, jasno označen pozivalac i pozvani.
+- [W] get_history_between(a,b) -> List[Call] (svi pozivi između datih brojeva, hronološki).
+- [W] get_history_for(number) -> List[Call] (dolazni i odlazni, sa flagom caller/callee).
+- [W] Format ispisa: datum/vreme, dužina, jasno označen pozivalac i pozvani.
 - Tests: sortiranje, filteri, edge-cases (prelazak midnight i dur=0).
 
 Milestone 4 — Live-call simulacija (zad 1) (2–4 sata)
-- [ ] Implementirati simulate_live_call u live_call.py koristeći nonblocking_processes.py (ako postoji).
-- [ ] Pravila:
+- [W] Implementirati simulate_live_call u live_call.py koristeći nonblocking_processes.py (ako postoji).
+- [W] Pravila:
   - Pre starta: normalizacija brojeva; proveriti blocked_set — ako blocked -> abort i obavesti.
   - Po prekidu: kreirati CallRecord sa statusom OK i duration; append u calls_list; pozvati save callback (append CSV) i popularity_graph.update_on_call.
-- [ ] Dve opcije prekida: Enter / "end", ili press-any-key (platform specific) — koristiti nonblocking_processes.py kao primarni mehanizam, fallback na input().
+- [W] Dve opcije prekida: Enter / "end", ili press-any-key (platform specific) — koristiti nonblocking_processes.py kao primarni mehanizam, fallback na input().
 - Acceptance: korisnik prekida without UI freeze; call se beleži samo ako nije blokiran.
 
 Milestone 5 — Pretraga imenika (zad 5) (2–4 sata)
