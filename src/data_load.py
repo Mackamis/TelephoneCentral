@@ -1,9 +1,12 @@
 from typing import Dict, List, Set, Tuple, Optional
 from datetime import datetime
+import os
 from call import Call
 from contact import Contact
 from trie import insert_firstname, insert_lastname, insert_phone
 import data
+
+CALLS_FILE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'calls.txt')
 
 class PhoneNormalizationError(Exception):
     pass
@@ -128,6 +131,7 @@ def load_phones(filepath):
 
 def load_calls(filepath):
     data.calls = []
+    from popularity_graph import update_on_call
     with open(filepath, 'r', encoding='utf-8') as f:
         for line_num, line in enumerate(f, start=1):
             try:
@@ -137,6 +141,7 @@ def load_calls(filepath):
                 caller, callee, timestamp, duration_secs = result
                 call = Call(caller, callee, timestamp, duration_secs)
                 data.calls.append(call)
+                update_on_call(call)
             except PhoneNormalizationError as e:
                 print(f"Warning: Skipping calls.txt line {line_num} due to phone normalization error: {e}")
                 continue
@@ -170,18 +175,32 @@ def load_all_data(phones_path, calls_path, blocked_path):
     print(f"  Loaded {len(data.blocked)} blocked numbers")
     data.calls.sort(key=lambda c: c.start)
     print("  Sorted global call list by start time")
-    print("Building popularity graph from calls.txt...")
-    from popularity_graph import rebuild_from_calls
-    rebuild_from_calls(data.calls, None)
-    print(f"  Popularity graph has {len(data.popularity_graph.nodes)} nodes")
+    print(f"  Popularity graph has {len(data.popularity_graph.nodes)} nodes (built during load)")
     print("Building call index...")
     from index import build_call_index
     data.call_index = build_call_index(data.calls)
     print(f"  Indexed {len(data.call_index)} phone numbers with call history")
 
 
+def append_call_to_file(call: Call):
+    try:
+
+        timestamp_str = call.start.strftime("%d.%m.%Y %H:%M:%S")
+        
+        hours = call.duration // 3600
+        minutes = (call.duration % 3600) // 60
+        seconds = call.duration % 60
+        duration_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        
+        line = f"{call.caller}, {call.callee}, {timestamp_str}, {duration_str}\n"
+        
+        with open(CALLS_FILE_PATH, 'a', encoding='utf-8') as f:
+            f.write(line)
+    except Exception as e:
+        print(f"Warning: Failed to append call to file: {e}")
+
+
 if __name__ == "__main__":
-    # Test the data loading functions
     load_all_data(
         '../data/phones.txt',
         '../data/calls.txt', 
