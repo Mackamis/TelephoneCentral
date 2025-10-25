@@ -1,4 +1,3 @@
-from typing import Dict, List, Set, Tuple, Optional
 from datetime import datetime
 import os
 from call import Call
@@ -13,7 +12,7 @@ class PhoneNormalizationError(Exception):
 
 
 def normalize_phone(phone):
-    normalized = phone.replace(' ', '').replace('-', '')
+    normalized = phone.replace(' ', '').replace('-', '').replace('+', '')
     
     if not normalized:
         raise ValueError(f"Phone number '{phone}' is empty after normalization")
@@ -24,7 +23,7 @@ def normalize_phone(phone):
     return normalized
 
 
-def parse_phone_line(line: str) -> Optional[Tuple[str, str, str]]:
+def parse_phone_line(line):
     line = line.strip()
 
     if not line or line.startswith('#'):
@@ -47,7 +46,7 @@ def parse_phone_line(line: str) -> Optional[Tuple[str, str, str]]:
     return firstname, lastname, normalized_phone
 
 
-def parse_call_line(line: str) -> Optional[Tuple[str, str, datetime, str]]:
+def parse_call_line(line):
 
     line = line.strip()
 
@@ -93,7 +92,7 @@ def parse_call_line(line: str) -> Optional[Tuple[str, str, datetime, str]]:
     return caller_normalized, callee_normalized, timestamp, duration_secs
 
 
-def parse_blocked_line(line: str) -> Optional[str]:
+def parse_blocked_line(line):
 
     line = line.strip()
     
@@ -114,7 +113,7 @@ def load_phones(filepath):
                 if result is None:
                     continue  # Skip 
                 firstname, lastname, phone = result
-                # Check for duplicate phone numbers
+                # Check for duplicate
                 if phone in data.phonebook:
                     print(f"Warning: Duplicate phone number '{phone}' at line {line_num}. Keeping first occurrence.")
                     continue
@@ -174,7 +173,6 @@ def load_all_data(phones_path, calls_path, blocked_path):
     load_blocked(blocked_path)
     print(f"  Loaded {len(data.blocked)} blocked numbers")
     data.calls.sort(key=lambda c: c.start)
-    print("  Sorted global call list by start time")
     print(f"  Popularity graph has {len(data.popularity_graph.nodes)} nodes (built during load)")
     print("Building call index...")
     from index import build_call_index
@@ -182,7 +180,7 @@ def load_all_data(phones_path, calls_path, blocked_path):
     print(f"  Indexed {len(data.call_index)} phone numbers with call history")
 
 
-def append_call_to_file(call: Call):
+def append_call_to_file(call):
     try:
 
         timestamp_str = call.start.strftime("%d.%m.%Y %H:%M:%S")

@@ -1,21 +1,18 @@
 import difflib
-from typing import List, Tuple
-from contact import Contact
 from trie import search_firstname_prefix, search_lastname_prefix, search_phone_prefix
 from popularity_graph import get_popularity_score
 from data_load import normalize_phone
 import data
 
 
-def search_by_firstname(prefix: str, exact_match: bool = False) -> List[Tuple[Contact, float]]:
+def search_by_firstname(prefix, exact_match = False):
 
     if not prefix:
         return []
     
-    # Trie search returns [(key, contact_list), ...]
     results = search_firstname_prefix(prefix)
     
-    # Flatten: collect all contacts from all matching keys
+    # Collect all contacts from all matching keys
     contacts_with_scores = []
     for key, contact_list in results:
         if exact_match and key.lower() != prefix.lower():
@@ -29,7 +26,7 @@ def search_by_firstname(prefix: str, exact_match: bool = False) -> List[Tuple[Co
     return contacts_with_scores
 
 
-def search_by_lastname(prefix: str, exact_match: bool = False) -> List[Tuple[Contact, float]]:
+def search_by_lastname(prefix, exact_match = False):
 
     if not prefix:
         return []
@@ -50,7 +47,7 @@ def search_by_lastname(prefix: str, exact_match: bool = False) -> List[Tuple[Con
     return contacts_with_scores
 
 
-def search_by_phone(prefix: str) -> List[Tuple[Contact, float]]:
+def search_by_phone(prefix):
 
     try:
         normalized_prefix = normalize_phone(prefix)
@@ -70,7 +67,7 @@ def search_by_phone(prefix: str) -> List[Tuple[Contact, float]]:
     return contacts_with_scores
 
 
-def autocomplete_names(prefix: str, is_firstname: bool = True) -> List[Tuple[str, int, float]]:
+def autocomplete_names(prefix, is_firstname = True):
 
     if not prefix:
         return []
@@ -91,7 +88,7 @@ def autocomplete_names(prefix: str, is_firstname: bool = True) -> List[Tuple[str
     return name_stats[:4]
 
 
-def did_you_mean_phone(phone_input: str) -> List[Tuple[str, Contact, float]]:
+def did_you_mean_phone(phone_input):
     try:
         normalized_input = normalize_phone(phone_input)
     except ValueError:
@@ -114,7 +111,7 @@ def did_you_mean_phone(phone_input: str) -> List[Tuple[str, Contact, float]]:
     return suggestions[:4]
 
 
-def format_search_results(results: List[Tuple[Contact, float]], page_size: int = 15) -> None:
+def format_search_results(results, page_size = 15):
 
     if not results:
         print("No results found matching your search.")

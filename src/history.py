@@ -1,12 +1,9 @@
-from typing import List, Optional, Tuple
-from datetime import datetime
-from call import Call
 import data
 from index import get_calls_for_number
 from data_load import normalize_phone
 
 
-def _in_range(call: Call, start_dt: Optional[datetime], end_dt: Optional[datetime]) -> bool:
+def _in_range(call, start_dt, end_dt):
     if start_dt and call.start < start_dt:
         return False
     if end_dt and call.start > end_dt:
@@ -14,11 +11,11 @@ def _in_range(call: Call, start_dt: Optional[datetime], end_dt: Optional[datetim
     return True
 
 
-def get_history_for(number: str, start_dt: Optional[datetime] = None, end_dt: Optional[datetime] = None) -> List[Tuple[Call, str]]:
+def get_history_for(number, start_dt = None, end_dt = None):
 
     num = normalize_phone(number)
     calls = get_calls_for_number(data.call_index, num)
-    result: List[Tuple[Call, str]] = []
+    result = []
     for c in calls:
         if not _in_range(c, start_dt, end_dt):
             continue
@@ -27,12 +24,12 @@ def get_history_for(number: str, start_dt: Optional[datetime] = None, end_dt: Op
     return result
 
 
-def get_history_between(a: str, b: str, start_dt: Optional[datetime] = None, end_dt: Optional[datetime] = None) -> List[Call]:
+def get_history_between(a, b, start_dt = None, end_dt = None):
 
     a_num = normalize_phone(a)
     b_num = normalize_phone(b)
     calls_a = get_calls_for_number(data.call_index, a_num)
-    result: List[Call] = []
+    result = []
     for c in calls_a:
         if not _in_range(c, start_dt, end_dt):
             continue
@@ -41,7 +38,7 @@ def get_history_between(a: str, b: str, start_dt: Optional[datetime] = None, end
     return result
 
 
-def format_call(call: Call, focus_number: Optional[str] = None) -> str:
+def format_call(call, focus_number = None):
 
     tag = ""
     if focus_number is not None:

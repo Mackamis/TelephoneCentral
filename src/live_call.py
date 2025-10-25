@@ -1,7 +1,6 @@
 from __future__ import annotations
 import time
 from datetime import datetime
-from typing import Optional
 
 from call import Call, _format_mmss
 import data
@@ -12,7 +11,7 @@ from nonblocking_process import KeyboardThread
 
 
 
-def start_live_call(caller: str, callee: str) -> Optional[Call]:
+def start_live_call(caller, callee):
 
 	caller_num = normalize_phone(caller)
 	callee_num = normalize_phone(callee)
@@ -29,7 +28,7 @@ def start_live_call(caller: str, callee: str) -> Optional[Call]:
 
 	done = {"value": False}
 
-	def on_key(_inp: str):
+	def on_key(_inp):
 		done["value"] = True
 
 	KeyboardThread(on_key)
@@ -61,7 +60,7 @@ def start_live_call(caller: str, callee: str) -> Optional[Call]:
 	return call
 
 
-def prompt_and_start_live_call() -> Optional[Call]:
+def prompt_and_start_live_call():
 
 	try:
 		caller = input("Enter caller number: ").strip()

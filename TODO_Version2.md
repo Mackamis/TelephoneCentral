@@ -104,44 +104,44 @@ Milestone 4 — Live-call simulacija (zad 1) (2–4 sata)
 - Acceptance: korisnik prekida without UI freeze; call se beleži samo ako nije blokiran.
 
 Milestone 5 — Pretraga imenika (zad 5) (2–4 sata)
-- [ ] Tri nezavisne pretrage (izbor kriterijuma):
+- [W] Tri nezavisne pretrage (izbor kriterijuma):
   - ime (firstname) — rezultati sortirati po popularnosti (najpre češće pozivani).
   - prezime (lastname) — rezultati mogu biti u proizvoljnom redu (za 10 poena: popularnost).
   - prefiks broja — trie numeric prefix; rezultati mogu biti u proizvoljnom redu ili po popularnosti.
-- [ ] Ispis: redni broj rezultata i dostupni podaci (ime, prezime, broj).
+- [W] Ispis: redni broj rezultata i dostupni podaci (ime, prezime, broj).
 - Acceptance: case-insensitive; prefix ignores separators; returns enumerated list.
 
 Milestone 6 — Did-you-mean i Autocomplete (zadaci 7 i 8) (2–4 sata)
 - Did-you-mean:
-  - [ ] Ako uneseni broj ne postoji, ponuditi top-N sličnih (npr. difflib.get_close_matches ili Levenshtein). Nisu obavezni isti početni prefiksi.
+  - [W] Ako uneseni broj ne postoji, ponuditi top-N sličnih (npr. difflib.get_close_matches ili Levenshtein). Nisu obavezni isti početni prefiksi.
 - Autocomplete:
-  - [ ] Ponuđeni završeci (do 5) bazirani na trie pretragama i sortirani po popularity score.
+  - [W] Ponuđeni završeci (do 5) bazirani na trie pretragama i sortirani po popularity score.
 - Acceptance: vraća relevantne predloge; autocomplete koristi i trie i popularnost.
 
 Milestone 7 — Popularity graph (zadaci >10 poena) (6–10 sati)
-- [ ] Metrički model za popularnost:
+- [W] Metrički model za popularnost:
   - incoming_count
   - incoming_duration
   - unique_callers_count (ili set)
   - opcionalne težine (npr. duration * 1.0 + calls * 0.5 + unique_callers * 0.3)
-- [ ] popularity_graph.update_on_call(call) — ažurira čvorove i ivice.
-- [ ] Graf NE briše niti ignoriše blokirane brojeve; blokirani nisu brisani iz grafa.
-- [ ] Serijalizovati graf (pickle/JSON) i učitavati pri startu.
+- [W] popularity_graph.update_on_call(call) — ažurira čvorove i ivice.
+- [W] Graf NE briše niti ignoriše blokirane brojeve; blokirani nisu brisani iz grafa.
+- [W] Serijalizovati graf (pickle/JSON) i učitavati pri startu.
 - Acceptance: graf se ažurira posle svakog uspešnog poziva (zad 1 & 2 & 9).
 
 Milestone 8 — Trie implementacija i serijalizacija (4–8 sati)
-- [ ] Implementirati tri trie-a: firstname, lastname, phoneprefix.
-- [ ] API: insert(contact), search_prefix(prefix) -> rezultati.
-- [ ] Serijalizovati trie-e (pickle) u preprocessed folder.
+- [W] Implementirati tri trie-a: firstname, lastname, phoneprefix.
+- [W] API: insert(contact), search_prefix(prefix) -> rezultati.
+- [W] Serijalizovati trie-e (pickle) u preprocessed folder.
 - Acceptance: pretrage po prefiksu brže i upotrebljive za autocomplete.
 
 Milestone 9 — Simulacija opterećenja (zad 9) (8–12 sati)
-- [ ] simulator.py: generisati 1000 poziva tokom 1 minute (može biti ubrzano u test modu).
+- [W] simulator.py: generisati 1000 poziva tokom 1 minute (može biti ubrzano u test modu).
   - Proveravati blocked listu pri svakom pozivu.
   - Ažurirati graf popularnosti posle svakog uspešnog poziva.
   - Beležiti najaktivnije korisnike, statistiku trajanja.
   - Omogućiti pause/resume (Event / threading).
-- [ ] Po završetku: ispis reporta (Top5 najpopularnijih, prosečno trajanje, broj generisanih poziva, blocked attempts).
+- [W] Po završetku: ispis reporta (Top5 najpopularnijih, prosečno trajanje, broj generisanih poziva, blocked attempts).
 - Acceptance: simulator radi deterministički u test modu; graf ažuriran.
 
 Milestone 10 — Testovi, dokumentacija i završetak (2–4 sata)

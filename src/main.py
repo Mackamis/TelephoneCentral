@@ -25,10 +25,6 @@ def print_contacts():
     for phone, contact in data.phonebook.items():
         print(f"  {contact.first_name} {contact.last_name}: {phone}")
 
-def print_calls():
-    print("\nCalls:")
-    for call in data.calls:
-        print(f"  {call.caller} → {call.callee} at {call.start} ({call.format_duration()})")
 
 def print_blocked():
     print("\nBlocked numbers:")
@@ -40,7 +36,7 @@ def simulate_calls_action():
     call_from_file('../data/call_simulation.txt', data.blocked)
 
 def run_overload_action():
-    run_overload_simulation(1000)
+    run_overload_simulation(60)
 
 def exit_action():
     save_on_exit()
@@ -48,12 +44,11 @@ def exit_action():
     sys.exit(0)
 
 def main():
-    print("Telephone Central CLI")
+    print("Telephone Central")
     
     atexit.register(save_on_exit)
     
     if preprocessed_files_exist():
-        print("\nPreprocessed data found.")
         print("1. Load preprocessed data (fast)")
         print("2. Rebuild from source files (slow)")
         
@@ -95,25 +90,23 @@ def main():
             sys.exit(1)
     menu = {
         "1": print_contacts,
-        "2": print_calls,
-        "3": print_blocked,
-        "4": simulate_calls_action,
-        "5": prompt_and_show_history_for,
-        "6": prompt_and_show_history_between,
-        "7": prompt_and_start_live_call,
-        "8": prompt_and_search,
-        "9": run_overload_action,
+        "2": print_blocked,
+        "3": simulate_calls_action,
+        "4": prompt_and_show_history_for,
+        "5": prompt_and_show_history_between,
+        "6": prompt_and_start_live_call,
+        "7": prompt_and_search,
+        "8": run_overload_action,
     }
     menu_text = [
         "1. Show contacts",
-        "2. Show calls",
-        "3. Show blocked numbers",
-        "4. Simulate calls from file",
-        "5. Show history for a number",
-        "6. Show history between two numbers",
-        "7. Start a live call",
-        "8. Search phone book",
-        "9. Run overload simulation (1000 calls)",
+        "2. Show blocked numbers",
+        "3. Simulate calls from file",
+        "4. Show history for a number",
+        "5. Show history between two numbers",
+        "6. Start a live call",
+        "7. Search phone book",
+        "8. Run overload simulation (1 min)",
         "Press Enter to exit",
     ]
     while True:

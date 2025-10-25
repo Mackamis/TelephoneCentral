@@ -1,10 +1,9 @@
-from typing import List, Dict
 from bisect import bisect_left, bisect_right, insort_right
-from call import Call
 
-def build_call_index(calls: List[Call]) -> Dict[str, List[Call]]:
 
-    index: Dict[str, List[Call]] = {}
+def build_call_index(calls):
+
+    index = {}
     for call in calls:
         for number in [call.caller, call.callee]:
             if number not in index:
@@ -13,11 +12,13 @@ def build_call_index(calls: List[Call]) -> Dict[str, List[Call]]:
 
     return index
 
-def get_calls_for_number(index: Dict[str, List[Call]], number: str) -> List[Call]:
+
+def get_calls_for_number(index, number):
 
     return index.get(number, [])
 
-def get_calls_in_time_range(index: Dict[str, List[Call]], number: str, start_dt, end_dt) -> List[Call]:
+
+def get_calls_in_time_range(index, number, start_dt, end_dt):
 
     calls = index.get(number, [])
 
@@ -25,7 +26,8 @@ def get_calls_in_time_range(index: Dict[str, List[Call]], number: str, start_dt,
     right = bisect_right(calls, end_dt, key=lambda c: c.start)
     return calls[left:right]
 
-def add_call_sorted(call: Call, calls: List[Call], index: Dict[str, List[Call]]) -> None:
+
+def add_call_sorted(call, calls, index) -> None:
 
     if not calls or call.start >= calls[-1].start:
         calls.append(call)

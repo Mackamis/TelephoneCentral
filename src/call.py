@@ -1,18 +1,16 @@
-from datetime import datetime
-
-def _format_mmss(seconds: int) -> str:
+def _format_mmss(seconds):
     minutes = seconds // 60
     sec = seconds % 60
     return f"{minutes:02d}:{sec:02d}"
 
 class Call:
-    def __init__(self, caller, callee, start, duration: int):
+    def __init__(self, caller, callee, start, duration):
         self.caller = caller
         self.callee = callee
         self.start = start
         self.duration = int(duration)
 
-    def format_duration(self, duration=None) -> str:
+    def format_duration(self, duration=None):
         if duration is None:
             duration = self.duration
         return _format_mmss(duration)
